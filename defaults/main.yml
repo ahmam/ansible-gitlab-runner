@@ -2,6 +2,8 @@
 # defaults file for ansible-gitlab-runner
 gitlab_runner_check_interval: 0
 gitlab_runner_concurrent_jobs: 1
+# defaults include ssh acces to user gitlab runner
+gitlab_runner_user: false
 
 gitlab_runner_config:
   url: https://gitlab.com/ci

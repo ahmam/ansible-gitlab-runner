@@ -1,6 +1,6 @@
 ---
 - name: debian | Cleaning Up Previous Repos
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "{{ item }}"
     state: absent
   become: true
@@ -9,7 +9,7 @@
     - "deb-src {{ gitlab_runner_uri_previous }}/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release|lower }} main"
 
 - name: debian | Installing Pre-Reqs
-  apt:
+  ansible.builtin.apt:
     name:
       - debian-archive-keyring
       - apt-transport-https
@@ -19,26 +19,26 @@
   until: result is successful
 
 - name: debian | Adding GitLab Runner GPG Key
-  apt_key:
+  ansible.builtin.apt_key:
     url: "{{ gitlab_runner_debian_package['key'] }}"
     state: present
   become: true
 
 - name: debian | Adding GitLab Repo(s)
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "{{ item }}"
     state: present
   become: true
   loop: "{{ gitlab_runner_debian_package['repos'] }}"
 
 - name: debian | Pinning GitLab Repo
-  template:
+  ansible.builtin.template:
     src: etc/apt/preferences.d/pin-gitlab-runner.pref.j2
     dest: /etc/apt/preferences.d/pin-gitlab-runner.pref
   become: true
 
 - name: debian | Installing GitLab Runner Package
-  apt:
+  ansible.builtin.apt:
     name: "gitlab-runner={{ gitlab_runner_version }}"
     state: present
   become: true

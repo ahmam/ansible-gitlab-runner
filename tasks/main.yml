@@ -1,10 +1,14 @@
 ---
 # tasks file for ansible-gitlab-runner
-- include: debian.yml
+- name: Include task install gitlab-runner
+  ansible.builtin.include_tasks: debian.yml
   when: ansible_os_family == "Debian"
 
-- include: config.yml
+- name: Include Task configure gitlab-runner
+  ansible.builtin.include_tasks: config.yml
   when:
     - gitlab_runner_config['configure']|bool
 
-- include: users.yml
+- name: Include Task usres
+  ansible.builtin.include_tasks: users.yml
+  when: gitlab_runner_user
